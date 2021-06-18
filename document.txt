@@ -1,0 +1,104 @@
+Rutas: 
+    - Usuarios: /users
+    - Productos: /products 
+    - Horarios: /scheduletime
+Dates: 
+     _______________ 
+    / Schedule Time \          
+    \_______________/ 
+
+     _______________ 
+    /     Users     \          
+    \_______________/
+           _|_ 0
+            |
+            |  N
+     ______/|\______  1
+    / Schedule User \__|____________________          
+    \_______________/  |                    |
+           _|_ 0                            |
+            |                               |
+            | N                             |
+     ______/|\_____  1                      |
+    /   Products   \_|______                |
+    \______________/ |      |               |
+                            |              _|_ 1
+                            |      1 _______|_______
+                            |____|__/     Dates     \          
+                                 |  \_______________/
+
+Entidades:
+    USERS:
+        - id: PRIMARY KEY 
+        - name: STRING
+        - email: STRING
+        - job: STRING
+        - admin: BOOLEAN
+        - image: STRING
+        - shedules:Array<SCHEDULE USERS>
+        - phoneNumber : STRING
+        - dni : STRING
+        - direction : STRING
+        - country : STRING
+        - city : STRING
+        - houseNumber : STRING
+    SCHEDULE USERS:
+        - id: NUMBER
+        - from: NUMBER
+        - to: NUMBER
+        - deliveryOff: NUMBER
+        - hourlyRate: NUMBER
+        - repeatWeekly: NUMBER
+        - available: BOOLEAN
+        - finished: BOOLEAN
+        - totalHours: NUMBER
+        - date: Dates
+        - total: Number
+        - pendding: BOOLEAN
+        - location: {
+            city: STRING
+            country: STRING
+            direction: STRING
+          }
+        - products: ARRAY<PRODUCTS>
+    DATES:
+        - year: NUMBER
+        - month: STRING
+        - date: NUMBER
+        - day: STRING   
+    PRODUCTS: 
+        - id: PRIMARY KEY
+        - title: STRING
+        - subtitle: STRING
+        - image: STRING
+        - prices: ARRAY<{cost: NUMBER , moneda: STRING}>
+        - descriptions: {
+            product: STRING
+            portion: STRING
+         }
+        - time_delivery: STRING
+        - type: STRING
+        - from: ARRAY<STRING>
+        - kitchen: ARRAY<STRING>
+        - ingredients: ARRAY<STRING>
+        - diet_info: ARRAY<STRING>
+        - dietary_restricion: ARRAY<STRING>
+        - itemSold: NUMBER
+        - reviews: {
+            five_start: NUMBER
+            for_start: NUMBER
+            three_start: NUMBER
+            two_start: NUMBER
+            one_start: NUMBER
+          }
+        - dateItemAdded: DATES
+    SCHEDULE TIME:
+        - day: STRING
+        - from: NUMBER
+        - to: NUMBER
+        - deliveryOff: NUMBER
+        - hourlyRate: NUMBER
+        - repeatWeekly: NUMBER
+
+Notas:
+ - JSON WEB TOKENS y AUTENTICATION para '/users'
