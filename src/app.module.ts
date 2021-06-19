@@ -1,9 +1,33 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import * as Joi from 'joi';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { UsersModule } from './users/users.module';
+import { ProductsModule } from './products/products.module';
+import { DatabaseModule } from './database/database.module';
+
+import config from './config';
 
 @Module({
-  imports: [],
+  imports: [
+    ConfigModule.forRoot({
+      envFilePath: '.env',
+      load: [config],
+      isGlobal: true,
+      validationSchema: Joi.object({
+        DATABASE_NAME: Joi.string().required(),
+        DATABASE_HOST: Joi.string().required(),
+        DATABASE_USER: Joi.string().required(),
+        DATABASE_PASSWORD: Joi.string().required(),
+        DATABASE_PORT: Joi.string().required(),
+      }),
+    }),
+    UsersModule,
+    ProductsModule,
+    DatabaseModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

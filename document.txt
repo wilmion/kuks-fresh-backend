@@ -101,4 +101,6 @@ Entidades:
         - repeatWeekly: NUMBER
 
 Notas:
- - JSON WEB TOKENS y AUTENTICATION para '/users'
+       /
+      /  JSON WEB TOKENS y AUTENTICATION para '/users'
+    \/ 
