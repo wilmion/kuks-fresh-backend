@@ -4,13 +4,13 @@ import { Document } from 'mongoose';
 @Schema()
 export class Dates extends Document {
   @Prop({ required: true, type: Number })
-  year: number;
+  readonly year: number;
   @Prop({ required: true, type: String })
-  month: string;
+  readonly month: string;
   @Prop({ required: true, type: Number })
-  date: number;
+  readonly date: number;
   @Prop({ required: true, type: String })
-  day: string;
+  readonly day: string;
 }
 
 export const DatesSchema = SchemaFactory.createForClass(Dates);

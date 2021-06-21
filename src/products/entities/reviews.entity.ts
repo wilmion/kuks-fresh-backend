@@ -4,19 +4,19 @@ import { Document } from 'mongoose';
 @Schema()
 export class Review extends Document {
   @Prop({ required: true, type: Number })
-  five_start: number;
+  readonly five_start: number;
 
   @Prop({ required: true, type: Number })
-  for_start: number;
+  readonly for_start: number;
 
   @Prop({ required: true, type: Number })
-  three_start: number;
+  readonly three_start: number;
 
   @Prop({ required: true, type: Number })
-  two_start: number;
+  readonly two_start: number;
 
   @Prop({ required: true, type: Number })
-  one_start: number;
+  readonly one_start: number;
 }
 
 export const ReviewSchema = SchemaFactory.createForClass(Review);

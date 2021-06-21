@@ -3,14 +3,14 @@ import { IsNotEmpty, IsNumber } from 'class-validator';
 export class CreateDates {
   @IsNotEmpty()
   @IsNumber()
-  year: number;
+  readonly year: number;
   @IsNotEmpty()
   @IsNumber()
-  month: string;
+  readonly month: string;
   @IsNotEmpty()
   @IsNumber()
-  date: number;
+  readonly date: number;
   @IsNotEmpty()
   @IsNumber()
-  day: string;
+  readonly day: string;
 }

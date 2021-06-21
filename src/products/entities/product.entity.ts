@@ -1,56 +1,65 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-import { Descriptions } from './descriptions.entity';
-import { Review } from './reviews.entity';
-import { Dates } from './dates.entity';
+import { Descriptions, DescriptionsSchema } from './descriptions.entity';
+import { Review, ReviewSchema } from './reviews.entity';
+import { Dates, DatesSchema } from './dates.entity';
 
 @Schema()
 export class Product extends Document {
   @Prop({ required: true })
-  title: string;
+  readonly title: string;
 
   @Prop({ required: true })
-  subtitle: string;
+  readonly subtitle: string;
 
   @Prop({ required: true })
-  image: string;
+  readonly image: string;
 
-  @Prop({ required: true, type: Array<{ cost: number; moneda: string }>() })
+  @Prop({
+    required: true,
+    type: [
+      {
+        cost: { required: true, type: Number },
+        moneda: { required: true, type: String },
+      },
+    ],
+    minlength: 1,
+  })
   prices: Array<{ cost: number; moneda: string }>;
 
-  @Prop({ type: Descriptions })
-  descriptions: Descriptions;
+  @Prop({ required: true, type: DescriptionsSchema })
+  readonly descriptions: Descriptions;
 
   @Prop({ required: true })
-  time_delivery: string;
+  readonly time_delivery: string;
 
   @Prop({ required: true })
-  type: string;
+  readonly type: string;
 
-  @Prop({ required: true, type: Array<string>() })
-  from: Array<string>;
+  @Prop({ required: true, type: [String] })
+  readonly from: Array<string>;
 
-  @Prop({ required: true, type: Array<string>() })
-  kitchen: Array<string>;
+  @Prop({ required: true, type: [String] })
+  readonly kitchen: Array<string>;
 
-  @Prop({ required: true, type: Array<string>() })
-  ingredients: Array<string>;
+  @Prop({ required: true, type: [String] })
+  readonly ingredients: Array<string>;
 
-  @Prop({ required: true, type: Array<string>() })
-  diet_info: Array<string>;
+  @Prop({ required: true, type: [String] })
+  readonly diet_info: Array<string>;
 
-  @Prop({ required: true, type: Array<string>() })
-  dietary_restricion: Array<string>;
+  @Prop({ required: true, type: [String] })
+  readonly dietary_restricion: Array<string>;
 
   @Prop({ required: true, type: Number })
-  itemSold: number;
+  readonly itemSold: number;
 
-  @Prop({ type: Review })
-  reviews: Review;
+  @Prop({ required: true, type: ReviewSchema })
+  readonly reviews: Review;
 
-  @Prop({ type: Dates })
-  dateItemAdded: Dates;
+  @Prop({ required: true, type: DatesSchema })
+  readonly dateItemAdded: Dates;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

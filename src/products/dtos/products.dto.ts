@@ -6,6 +6,7 @@ import {
   IsArray,
   ValidateNested,
 } from 'class-validator';
+import { Type } from 'class-transformer';
 import { PartialType } from '@nestjs/mapped-types';
 
 import { CreateDescriptions } from './descriptions.dto';
@@ -25,60 +26,69 @@ class CreateCost {
 export class CreateProductDto {
   @IsNotEmpty()
   @IsString()
-  title: string;
+  readonly title: string;
 
   @IsNotEmpty()
   @IsString()
-  subtitle: string;
+  readonly subtitle: string;
 
   @IsNotEmpty()
   @IsUrl()
-  image: string;
+  readonly image: string;
 
   @IsNotEmpty()
-  @ValidateNested()
-  prices: Array<CreateCost>;
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateCost)
+  readonly prices: Array<CreateCost>;
 
   @ValidateNested()
-  descriptions: CreateDescriptions;
+  readonly descriptions: CreateDescriptions;
 
   @IsNotEmpty()
   @IsString()
-  time_delivery: string;
+  readonly time_delivery: string;
 
   @IsNotEmpty()
   @IsString()
-  type: string;
+  readonly type: string;
 
   @IsNotEmpty()
   @IsArray()
-  from: Array<string>;
+  @Type(() => String)
+  readonly from: Array<string>;
 
   @IsNotEmpty()
   @IsArray()
-  kitchen: Array<string>;
+  @Type(() => String)
+  readonly kitchen: Array<string>;
 
   @IsNotEmpty()
   @IsArray()
-  ingredients: Array<string>;
+  @Type(() => String)
+  readonly ingredients: Array<string>;
 
   @IsNotEmpty()
   @IsArray()
-  diet_info: Array<string>;
+  @Type(() => String)
+  readonly diet_info: Array<string>;
 
   @IsNotEmpty()
   @IsArray()
-  dietary_restricion: Array<string>;
+  @Type(() => String)
+  readonly dietary_restricion: Array<string>;
 
   @IsNotEmpty()
   @IsNumber()
-  itemSold: number;
+  readonly itemSold: number;
 
+  @IsNotEmpty()
   @ValidateNested()
-  reviews: CreateReviews;
+  readonly reviews: CreateReviews;
 
+  @IsNotEmpty()
   @ValidateNested()
-  dateItemAdded: CreateDates;
+  readonly dateItemAdded: CreateDates;
 }
 
 export class UpdateProductDto extends PartialType(CreateProductDto) {}

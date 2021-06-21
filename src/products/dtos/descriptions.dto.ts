@@ -3,9 +3,9 @@ import { IsString, IsNotEmpty } from 'class-validator';
 export class CreateDescriptions {
   @IsNotEmpty()
   @IsString()
-  product: string;
+  readonly product: string;
 
   @IsNotEmpty()
   @IsString()
-  portion: string;
+  readonly portion: string;
 }
