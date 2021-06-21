@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 
-import { setResponse } from 'src/core/response';
+import { setResponse } from '@core/response';
 
 import { CreateProductDto, UpdateProductDto } from '../dtos/products.dto';
 import { ProductsService } from '../services/products.service';

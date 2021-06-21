@@ -3,7 +3,7 @@ import { Document } from 'mongoose';
 
 import { Descriptions, DescriptionsSchema } from './descriptions.entity';
 import { Review, ReviewSchema } from './reviews.entity';
-import { Dates, DatesSchema } from './dates.entity';
+import { Dates, DatesSchema } from '@core/entity/dates.entity';
 
 @Schema()
 export class Product extends Document {

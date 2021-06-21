@@ -10,7 +10,7 @@ import { Type } from 'class-transformer';
 import { PartialType } from '@nestjs/mapped-types';
 
 import { CreateDescriptions } from './descriptions.dto';
-import { CreateDates } from './Dates.dto';
+import { CreateDates } from '@core/dtos/Dates.dto';
 import { CreateReviews } from './reviews.dto';
 
 class CreateCost {
