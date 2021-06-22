@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsArray, IsBoolean, IsString } from 'class-validator';
 import { OmitType, PartialType } from '@nestjs/mapped-types';
 
-class CreateUsers {
+export class CreateUsers {
   @IsNotEmpty()
   @IsString()
   readonly name: string;
