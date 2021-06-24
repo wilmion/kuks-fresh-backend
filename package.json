@@ -29,6 +29,7 @@
     "@nestjs/passport": "^7.1.5",
     "@nestjs/platform-express": "^7.6.15",
     "@types/bcrypt": "^5.0.0",
+    "@types/jsonwebtoken": "^8.5.2",
     "bcrypt": "^5.0.1",
     "class-validator": "^0.13.1",
     "joi": "^17.4.0",
