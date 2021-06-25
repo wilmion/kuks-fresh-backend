@@ -7,18 +7,29 @@ import {
   Param,
   Delete,
   Response as Res,
+  UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
+import { Role } from '@core/decorators/roles.decorator';
+import { Public } from '@core/decorators/public.decorator';
+
+//Guards
+import { JwtGuard } from '@core/guards/jwt.guard';
+import { RolesGuard } from '@core/guards/roles.guard';
 
 import { setResponse } from '@core/response';
 
 import { CreateProductDto, UpdateProductDto } from '../dtos/products.dto';
 import { ProductsService } from '../services/products.service';
 
+import { RoleE } from '@core/enums/role.enum';
+
 @Controller('products')
+@UseGuards(JwtGuard, RolesGuard)
 export class ProductsController {
   constructor(private productsService: ProductsService) {}
 
+  @Public()
   @Get('')
   async getProducts(@Res() res: Response) {
     try {
@@ -29,6 +40,7 @@ export class ProductsController {
     }
   }
 
+  @Public()
   @Get('/:id')
   async getProduct(@Param('id') id: string, @Res() res: Response) {
     try {
@@ -39,6 +51,7 @@ export class ProductsController {
     }
   }
 
+  @Role(RoleE.ADMIN)
   @Post('')
   async create(@Body() payload: CreateProductDto, @Res() res: Response) {
     try {
@@ -50,6 +63,7 @@ export class ProductsController {
     }
   }
 
+  @Role(RoleE.ADMIN)
   @Patch('/:id')
   async update(
     @Body() payload: UpdateProductDto,
@@ -70,6 +84,7 @@ export class ProductsController {
     }
   }
 
+  @Role(RoleE.ADMIN)
   @Delete('/:id')
   async remove(@Res() res: Response, @Param('id') id: string) {
     try {

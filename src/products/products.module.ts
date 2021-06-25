@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
+import { JWTStrategy } from '@core/strategies/jwt.strategy';
+
 import { ProductsController } from './controllers/products.controller';
 import { Product, ProductSchema } from './entities/product.entity';
 import { ProductsService } from './services/products.service';
@@ -15,7 +17,7 @@ import { ProductsService } from './services/products.service';
     ]),
   ],
   controllers: [ProductsController],
-  providers: [ProductsService],
+  providers: [ProductsService, JWTStrategy],
   exports: [ProductsService],
 })
 export class ProductsModule {}

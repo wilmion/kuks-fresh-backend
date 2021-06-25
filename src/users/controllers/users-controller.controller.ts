@@ -3,7 +3,7 @@ import {
   Controller,
   Patch,
   Response as Res,
-  UseGuards,
+  //UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
 
@@ -11,10 +11,8 @@ import { setResponse } from '@core/response/index';
 
 import { UsersServiceService } from '../services/users-service.service';
 
-import { UsersGuard as Guard } from '../guards/users.guard';
-
 @Controller('users')
-@UseGuards(Guard)
+//@UseGuards(Guard)
 export class UsersControllerController {
   constructor(private usersService: UsersServiceService) {}
 

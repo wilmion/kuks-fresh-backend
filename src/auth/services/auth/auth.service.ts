@@ -1,17 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 
 import * as bcrypt from 'bcrypt';
-import { generate } from '@core/utils/JWT';
 
 import { UsersEntity } from '@root/users/entity/users.entity';
 import { AuthEntity } from '../../entities/auth.entity';
 import { CreateAuthDto } from '../../dtos/auth.dto';
 import { CreateUsers } from '@root/users/dtos/users.dto';
-import { Model } from 'mongoose';
+
+import { RoleI } from '@core/models/role.model';
 
 import { UsersServiceService } from '@root/users/services/users-service.service';
-import { generatePermisions } from '@core/utils/generatePermisions';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
@@ -19,6 +20,7 @@ export class AuthService {
     @InjectModel(AuthEntity.name) private authModel: Model<AuthEntity>,
     @InjectModel(UsersEntity.name) private usersModel: Model<UsersEntity>,
     private usersService: UsersServiceService,
+    private jwtService: JwtService,
   ) {}
 
   async login(email: string, password: string) {
@@ -32,11 +34,12 @@ export class AuthService {
 
     const userFull = await this.usersService.getUser(email);
 
-    const token: string = await generate(
-      generatePermisions(userFull.admin, userFull.email),
-      'secret',
-      1,
-    );
+    const payload: RoleI = {
+      role: userFull.admin ? 'admin' : 'client',
+      id: userFull.id,
+    };
+
+    const token: string = await this.jwtService.signAsync(payload);
 
     const data = {
       token,
