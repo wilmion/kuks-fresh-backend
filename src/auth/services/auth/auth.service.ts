@@ -24,13 +24,9 @@ export class AuthService {
   ) {}
 
   async login(email: string, password: string) {
-    const user = await this.authModel.findOne({ email: email }).exec();
+    const isValid = await this.validateUser(email, password);
 
-    if (!user) throw new Error('Is email not exist');
-
-    const isUser = await bcrypt.compare(password, user.password);
-
-    if (!isUser) throw new Error('Not user');
+    if (!isValid) throw new Error('Not user');
 
     const userFull = await this.usersService.getUser(email);
 
@@ -87,5 +83,15 @@ export class AuthService {
     await newAuthentication.save();
 
     return true;
+  }
+
+  async validateUser(email: string, password: string) {
+    const user = await this.authModel.findOne({ email: email }).exec();
+
+    if (!user) return false;
+
+    const isUser = await bcrypt.compare(password, user.password);
+
+    return isUser;
   }
 }
