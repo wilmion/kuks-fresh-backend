@@ -98,8 +98,14 @@ export class UsersServiceService {
     return `User with ID: ${id} rigth now is admin`;
   }
 
-  async deleteUser(email: string) {
-    await this.usersModel.findOneAndRemove({ email }).exec();
-    return 'Deleted User';
+  async deleteUser(id: string) {
+    const user = await this.usersModel.findById(id).exec();
+
+    if (
+      user.email === 'wilmion92@gmail.com' ||
+      (user.admin && user.email !== 'wilmion92@gmail.com')
+    )
+      throw new Error('Este es un admin');
+    return await this.usersModel.findByIdAndRemove(id).exec();
   }
 }

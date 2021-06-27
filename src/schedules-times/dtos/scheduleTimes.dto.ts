@@ -28,4 +28,4 @@ export class CreateScheduleTimeDto {
   readonly repeatWeekly: number;
 }
 
-export class UpdateAuthDto extends PartialType(CreateScheduleTimeDto) {}
+export class UpdateScheduleTimeDto extends PartialType(CreateScheduleTimeDto) {}

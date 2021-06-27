@@ -31,4 +31,4 @@ export class ScheduleTimes extends Document {
   readonly repeatWeekly: number;
 }
 
-export const ReviewSchema = SchemaFactory.createForClass(ScheduleTimes);
+export const ScheduleTimeSchema = SchemaFactory.createForClass(ScheduleTimes);

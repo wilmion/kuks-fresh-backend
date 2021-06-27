@@ -107,13 +107,12 @@ export class AuthService {
     return isUser;
   }
 
-  async removeUser(idAuth: string) {
-    const userAuth = await this.authModel.findByIdAndRemove(idAuth).exec();
+  async removeUser(id: string) {
+    const user = await this.usersService.deleteUser(id);
 
-    const email: string = userAuth.email;
-
-    await this.usersService.deleteUser(email);
+    await this.authModel.findOneAndRemove({ email: user.email }).exec();
 
     return 'Account Removed';
   }
+  //Falta hacer el cambio de contraseña e email
 }
