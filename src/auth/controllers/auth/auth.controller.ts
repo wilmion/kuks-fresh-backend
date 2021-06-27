@@ -1,15 +1,35 @@
-import { Body, Controller, Post, Response as Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  Response as Res,
+  Delete,
+  Param,
+  UseGuards,
+} from '@nestjs/common';
 import { Response } from 'express';
 
 import { setResponse } from '@core/response/index';
-import { AuthService } from '@root/auth/services/auth/auth.service';
+
 import { CreateAuthDto } from '@root/auth/dtos/auth.dto';
 import { CreateUsers } from '@root/users/dtos/users.dto';
 
+import { JwtGuard } from '@core/guards/jwt.guard';
+import { RolesGuard } from '@core/guards/roles.guard';
+
+import { Public } from '@core/decorators/public.decorator';
+import { Role } from '@core/decorators/roles.decorator';
+
+import { RoleE } from '@core/enums/role.enum';
+
+import { AuthService } from '@root/auth/services/auth/auth.service';
+
 @Controller('auth')
+@UseGuards(JwtGuard, RolesGuard)
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @Public()
   @Post('/login')
   async login(@Body() body: CreateAuthDto, @Res() res: Response) {
     try {
@@ -22,6 +42,7 @@ export class AuthController {
     }
   }
 
+  @Public()
   @Post('/register')
   async register(@Body() body: CreateUsers, @Res() res: Response) {
     try {
@@ -29,7 +50,20 @@ export class AuthController {
 
       setResponse(res, data, 201);
     } catch (e) {
+      console.log(e);
       setResponse(res, null, 500, 'Internal Server Error');
+    }
+  }
+
+  @Role(RoleE.ADMIN, RoleE.SUPERADMIN)
+  @Delete('/:id')
+  async deleteUser(@Res() res: Response, @Param('id') id: string) {
+    try {
+      const data = await this.authService.removeUser(id);
+      setResponse(res, data, 200);
+    } catch (e: any) {
+      console.log(e);
+      setResponse(res, null, 500, 'Internal server Error');
     }
   }
 }

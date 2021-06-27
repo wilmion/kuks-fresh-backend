@@ -51,7 +51,7 @@ export class ProductsController {
     }
   }
 
-  @Role(RoleE.ADMIN)
+  @Role(RoleE.ADMIN, RoleE.SUPERADMIN)
   @Post('')
   async create(@Body() payload: CreateProductDto, @Res() res: Response) {
     try {
@@ -63,7 +63,7 @@ export class ProductsController {
     }
   }
 
-  @Role(RoleE.ADMIN)
+  @Role(RoleE.ADMIN, RoleE.SUPERADMIN)
   @Patch('/:id')
   async update(
     @Body() payload: UpdateProductDto,
@@ -84,7 +84,7 @@ export class ProductsController {
     }
   }
 
-  @Role(RoleE.ADMIN)
+  @Role(RoleE.ADMIN, RoleE.SUPERADMIN)
   @Delete('/:id')
   async remove(@Res() res: Response, @Param('id') id: string) {
     try {

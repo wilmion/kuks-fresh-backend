@@ -62,8 +62,8 @@ export class CreateSchedulesUsers {
   readonly date: CreateDates;
 
   @IsNotEmpty()
-  @IsNumber()
-  readonly total: number;
+  @IsString()
+  readonly total: string;
 
   @IsNotEmpty()
   @IsBoolean()
@@ -76,6 +76,10 @@ export class CreateSchedulesUsers {
   @IsNotEmpty()
   @IsArray()
   readonly products: Array<string>;
+
+  @IsNotEmpty()
+  @IsString()
+  readonly identifiquerShop: string;
 }
 
 export class UpdateSchedulesUsersDto extends PartialType(

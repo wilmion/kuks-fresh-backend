@@ -6,10 +6,13 @@ import * as bcrypt from 'bcrypt';
 
 import { UsersEntity } from '@root/users/entity/users.entity';
 import { AuthEntity } from '../../entities/auth.entity';
+
 import { CreateAuthDto } from '../../dtos/auth.dto';
 import { CreateUsers } from '@root/users/dtos/users.dto';
 
 import { RoleI } from '@core/models/role.model';
+
+import { RoleE } from '@core/enums/role.enum';
 
 import { UsersServiceService } from '@root/users/services/users-service.service';
 import { JwtService } from '@nestjs/jwt';
@@ -28,10 +31,16 @@ export class AuthService {
 
     if (!isValid) throw new Error('Not user');
 
-    const userFull = await this.usersService.getUser(email);
+    const userFull: UsersEntity = await this.usersService.getUser(email);
+
+    const isSuperAdmin: boolean = userFull.email === 'wilmion92@gmail.com';
 
     const payload: RoleI = {
-      role: userFull.admin ? 'admin' : 'client',
+      role: isSuperAdmin
+        ? RoleE.SUPERADMIN
+        : userFull.admin
+        ? RoleE.ADMIN
+        : RoleE.CLIENT,
       id: userFull.id,
     };
 
@@ -58,6 +67,7 @@ export class AuthService {
 
       return '¡Register Success!';
     } catch (e: any) {
+      console.log(e);
       throw new Error(e.message);
     }
   }
@@ -93,5 +103,15 @@ export class AuthService {
     const isUser = await bcrypt.compare(password, user.password);
 
     return isUser;
+  }
+
+  async removeUser(idAuth: string) {
+    const userAuth = await this.authModel.findByIdAndRemove(idAuth).exec();
+
+    const email: string = userAuth.email;
+
+    await this.usersService.deleteUser(email);
+
+    return 'Account Removed';
   }
 }

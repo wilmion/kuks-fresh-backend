@@ -33,8 +33,8 @@ export class SchedulesUsersEntity extends Document {
   @Prop({ required: true, type: DatesSchema })
   readonly date: Dates;
 
-  @Prop({ required: true, type: Number })
-  readonly total: number;
+  @Prop({ required: true, type: String })
+  readonly total: string;
 
   @Prop({ required: true, type: Boolean })
   readonly pendding: boolean;
@@ -55,6 +55,9 @@ export class SchedulesUsersEntity extends Document {
 
   @Prop({ required: true, type: [{ type: Types.ObjectId, ref: Product.name }] })
   readonly products: Array<Product | Types.ObjectId>; //products
+
+  @Prop({ required: true, type: String, unique: true })
+  readonly identifiquerShop: string;
 }
 
 export const SchedulesUsersSchema =

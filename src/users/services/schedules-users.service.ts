@@ -12,8 +12,40 @@ export class SchedulesUsersService {
     private schedulesUsers: Model<SchedulesUsersEntity>,
   ) {}
 
-  async create(scheduleUser: CreateSchedulesUsers) {
-    const schedule = new this.schedulesUsers(scheduleUser);
-    return schedule.save();
+  async create(scheduleUser: CreateSchedulesUsers, idUser: string) {
+    const { from, to, totalHours, location, date } = scheduleUser;
+    const newScheduleUser: CreateSchedulesUsers = {
+      ...scheduleUser,
+      identifiquerShop: `${idUser}${from}${to}${totalHours}${location.city}${location.country}${location.direction}${date.year}${date.month}${date.date}${date.day}`,
+    };
+
+    const isExist = await this.schedulesUsers
+      .findOne({ identifiquerShop: newScheduleUser.identifiquerShop })
+      .exec();
+
+    if (isExist) {
+      return isExist.id;
+    }
+
+    const schedule = new this.schedulesUsers(newScheduleUser);
+
+    await schedule.save();
+
+    return schedule.id;
+  }
+
+  async getSchedule(id: string) {
+    const schedule = await this.schedulesUsers
+      .findOne({ _id: id })
+      .populate('products')
+      .exec();
+
+    return schedule;
+  }
+
+  async delete(id: string) {
+    await this.schedulesUsers.findByIdAndRemove(id);
+
+    return 'Schedule Removed';
   }
 }

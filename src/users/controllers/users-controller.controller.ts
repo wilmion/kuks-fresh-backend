@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Delete,
   Param,
   Patch,
   Response as Res,
@@ -28,7 +27,7 @@ import { UpdateProductDto } from '@root/products/dtos/products.dto';
 export class UsersControllerController {
   constructor(private usersService: UsersServiceService) {}
 
-  @Role(RoleE.CLIENT, RoleE.ADMIN)
+  @Role(RoleE.CLIENT, RoleE.ADMIN, RoleE.SUPERADMIN)
   @AlsoAdmin()
   @Patch('/:id')
   async updateUser(
@@ -45,15 +44,24 @@ export class UsersControllerController {
     }
   }
 
-  @Role(RoleE.CLIENT, RoleE.ADMIN)
-  @AlsoAdmin()
-  @Delete('/:id')
-  async deleteUser(@Res() res: Response, @Param('id') id: string) {
+  @Role(RoleE.SUPERADMIN)
+  @Patch('/convert-admin/:id')
+  async convertToAdmin(@Res() res: Response, @Param('id') id: string) {
     try {
-      const data = await this.usersService.deleteUser(id);
+      const data = await this.usersService.toogleUserAdmin(true, id);
       setResponse(res, data, 200);
     } catch (e: any) {
-      console.log(e);
+      setResponse(res, null, 500, 'Internal server Error');
+    }
+  }
+
+  @Role(RoleE.SUPERADMIN)
+  @Patch('/remove-admin/:id')
+  async removeAdmin(@Res() res: Response, @Param('id') id: string) {
+    try {
+      const data = await this.usersService.toogleUserAdmin(false, id);
+      setResponse(res, data, 200);
+    } catch (e: any) {
       setResponse(res, null, 500, 'Internal server Error');
     }
   }

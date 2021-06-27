@@ -11,7 +11,6 @@ export const setResponse = (
     status: status,
     error: error ? error : null,
   };
-
-  res.send(response);
   res.status(status);
+  res.send(response);
 };
