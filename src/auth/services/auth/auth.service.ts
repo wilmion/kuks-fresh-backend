@@ -31,7 +31,9 @@ export class AuthService {
 
     if (!isValid) throw new Error('Not user');
 
-    const userFull: UsersEntity = await this.usersService.getUser(email);
+    const user: any = await this.usersModel.findOne({ email }).exec();
+
+    const userFull: UsersEntity = await this.usersService.getUser(user);
 
     const isSuperAdmin: boolean = userFull.email === 'wilmion92@gmail.com';
 

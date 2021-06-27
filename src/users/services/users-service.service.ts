@@ -17,10 +17,20 @@ export class UsersServiceService {
     private usersModel: Model<UsersEntity>,
     private schedulesUserService: SchedulesUsersService,
   ) {}
+  async getAllUsers() {
+    const users = await this.usersModel.find().exec();
 
-  async getUser(email: string) {
-    const user: any = await this.usersModel.findOne({ email }).exec();
+    const data: Array<any> = [];
 
+    for (const user of users) {
+      const user_with_full_dates = await this.getUser(user);
+      data.push(user_with_full_dates);
+    }
+
+    return data;
+  }
+
+  async getUser(user: any) {
     const schedulesIds = user.shedules;
     const schedules: Array<SchedulesUsersEntity> = [];
 

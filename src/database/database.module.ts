@@ -28,7 +28,10 @@ import config from '../config';
       useFactory: async (configService: ConfigType<typeof config>) => {
         const { host, user, password, port, name } = configService.database;
         const uri = `${host}${user}:${password}${port}`;
-        const client = new MongoClient(uri, { useUnifiedTopology: true });
+        const client = new MongoClient(uri, {
+          useUnifiedTopology: true,
+          useNewUrlParser: true,
+        });
         await client.connect();
         const database = client.db(name);
         return database;

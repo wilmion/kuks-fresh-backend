@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Param,
   Patch,
   Response as Res,
@@ -26,6 +27,17 @@ import { UpdateProductDto } from '@root/products/dtos/products.dto';
 @UseGuards(JwtGuard, RolesGuard, IdentifyUserGuard)
 export class UsersControllerController {
   constructor(private usersService: UsersServiceService) {}
+
+  @Role(RoleE.ADMIN, RoleE.SUPERADMIN)
+  @Get('/')
+  async getAll(@Res() res: Response) {
+    try {
+      const data = await this.usersService.getAllUsers();
+      setResponse(res, data, 200);
+    } catch (e: any) {
+      setResponse(res, null, 500, 'Internal server Error');
+    }
+  }
 
   @Role(RoleE.CLIENT, RoleE.ADMIN, RoleE.SUPERADMIN)
   @AlsoAdmin()

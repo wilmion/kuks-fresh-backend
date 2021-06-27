@@ -10,6 +10,7 @@ import {
 import { UsersServiceService } from './services/users-service.service';
 import { UsersControllerController } from './controllers/users-controller.controller';
 import { SchedulesUsersService } from './services/schedules-users.service';
+import { SchedulesUsersController } from './controllers/schedules-users.controller';
 
 @Module({
   imports: [
@@ -24,7 +25,7 @@ import { SchedulesUsersService } from './services/schedules-users.service';
       },
     ]),
   ],
-  controllers: [UsersControllerController],
+  controllers: [UsersControllerController, SchedulesUsersController],
   providers: [UsersServiceService, SchedulesUsersService],
   exports: [UsersServiceService],
 })

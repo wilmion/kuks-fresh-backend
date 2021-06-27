@@ -3,7 +3,10 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 import { SchedulesUsersEntity } from '../entity/SchedulesUsers.entity';
-import { CreateSchedulesUsers } from '../dtos/schedulesUsers.dto';
+import {
+  CreateSchedulesUsers,
+  UpdateSchedulesUsersDto,
+} from '../dtos/schedulesUsers.dto';
 
 @Injectable()
 export class SchedulesUsersService {
@@ -41,6 +44,14 @@ export class SchedulesUsersService {
       .exec();
 
     return schedule;
+  }
+
+  async updateSchedule(id: string, changes: UpdateSchedulesUsersDto) {
+    this.schedulesUsers
+      .findByIdAndUpdate(id, { $set: changes, new: true })
+      .exec();
+
+    return `Schedule Updated`;
   }
 
   async delete(id: string) {
