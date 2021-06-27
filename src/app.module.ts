@@ -8,6 +8,7 @@ import { UsersModule } from './users/users.module';
 import { ProductsModule } from './products/products.module';
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './auth/auth.module';
+import { SchedulesTimesModule } from './schedules-times/schedules-times.module';
 
 import config from './config';
 
@@ -29,6 +30,7 @@ import config from './config';
     ProductsModule,
     DatabaseModule,
     AuthModule,
+    SchedulesTimesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
