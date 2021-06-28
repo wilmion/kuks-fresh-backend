@@ -11,6 +11,7 @@ Este backend esta realizado para mi proyecto personal de Kusks Fresh en Angular.
 - MongoDB
 
 Frontend : [frontend](https://github.com/wilmion/kuks-fresh 'frontend')
-Documentation: Proximamente
+Backend: [deploy](https://kuks-fresh.herokuapp.com/ 'backend')
+Documentation: Proximamente....
 
 > Nunca pares de aprender 💚💚💚
