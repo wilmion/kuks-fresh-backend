@@ -74,6 +74,44 @@ export class AuthService {
     }
   }
 
+  async changePassword(id: string, new_pass: string) {
+    const newPasswordEncript: string = await bcrypt.hash(new_pass, 10);
+
+    const user = await this.getUserOnAuth(id);
+
+    await this.authModel
+      .findByIdAndUpdate(user._id, {
+        $set: { password: newPasswordEncript },
+        new: true,
+      })
+      .exec();
+
+    return 'Changed Password';
+  }
+
+  async changeEmail(id: string, newEmail: string) {
+    const isOtherUserExistWithEmail = await this.authModel
+      .findOne({ email: newEmail })
+      .exec();
+
+    if (isOtherUserExistWithEmail) throw new Error('Este usuario ya existe');
+
+    const user = await this.getUserOnAuth(id);
+
+    const changes = { email: newEmail };
+
+    await this.usersModel.findByIdAndUpdate(id, {
+      $set: changes,
+      new: true,
+    });
+
+    await this.authModel
+      .findByIdAndUpdate(user._id, { $set: changes, new: true })
+      .exec();
+
+    return 'Email Changed';
+  }
+
   async registerInAuth(email: string, password: string) {
     const isExistOtherUser = await this.authModel
       .findOne({ email: email })
@@ -114,5 +152,14 @@ export class AuthService {
 
     return 'Account Removed';
   }
-  //Falta hacer el cambio de contraseña e email
+
+  async getUserOnAuth(idUser: string) {
+    const user = await this.usersModel.findById(idUser).exec();
+
+    const userInAuth = await this.authModel
+      .findOne({ email: user.email })
+      .exec();
+
+    return userInAuth;
+  }
 }

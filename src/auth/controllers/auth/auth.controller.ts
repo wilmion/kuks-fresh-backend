@@ -3,9 +3,11 @@ import {
   Controller,
   Post,
   Response as Res,
+  Request,
   Delete,
   Param,
   UseGuards,
+  Patch,
 } from '@nestjs/common';
 import { Response } from 'express';
 
@@ -19,6 +21,8 @@ import { RolesGuard } from '@core/guards/roles.guard';
 
 import { Public } from '@core/decorators/public.decorator';
 import { Role } from '@core/decorators/roles.decorator';
+
+import { RoleI } from '@core/models/role.model';
 
 import { RoleE } from '@core/enums/role.enum';
 
@@ -52,6 +56,33 @@ export class AuthController {
     } catch (e) {
       console.log(e);
       setResponse(res, null, 500, 'Internal Server Error');
+    }
+  }
+
+  @Patch('change-password')
+  async change_pass(@Res() res: Response, @Request() req: any) {
+    try {
+      const token: RoleI = req.user;
+      const data = await this.authService.changePassword(
+        token.id,
+        req.body.password,
+      );
+      setResponse(res, data, 200);
+    } catch (e: any) {
+      console.log(e);
+      setResponse(res, null, 500, 'Internal server Error');
+    }
+  }
+
+  @Patch('change-email')
+  async change_email(@Res() res: Response, @Request() req: any) {
+    try {
+      const token: RoleI = req.user;
+      const data = await this.authService.changeEmail(token.id, req.body.email);
+      setResponse(res, data, 200);
+    } catch (e: any) {
+      console.log(e);
+      setResponse(res, null, 500, 'Internal server Error');
     }
   }
 
