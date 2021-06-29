@@ -9,6 +9,7 @@ import {
   UseGuards,
   Response as Res,
 } from '@nestjs/common';
+import { ApiTags, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 
 import { JwtGuard } from '@core/guards/jwt.guard';
 import { RolesGuard } from '@core/guards/roles.guard';
@@ -29,6 +30,7 @@ import {
   UpdateScheduleTimeDto,
 } from '../dtos/scheduleTimes.dto';
 
+@ApiTags('Schedules Times')
 @Controller('schedules-times')
 @UseGuards(JwtGuard, RolesGuard)
 export class SchedulesTimesController {
@@ -36,6 +38,11 @@ export class SchedulesTimesController {
 
   @Public()
   @Get('/')
+  @ApiResponse({
+    status: 200,
+    description: 'CreateScheduleTimeDto[]',
+  })
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
   async getAll(@Res() res: Response) {
     try {
       const data = await this.scheduleTimes.getAll();
@@ -47,6 +54,11 @@ export class SchedulesTimesController {
 
   @Public()
   @Get('/:day')
+  @ApiResponse({
+    status: 200,
+    description: 'CreateScheduleTimeDto',
+  })
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
   async getByDay(@Res() res: Response, @Param('day') day: DaysT) {
     try {
       const data = await this.scheduleTimes.getByDay(day);
@@ -58,6 +70,12 @@ export class SchedulesTimesController {
 
   @Role(RoleE.ADMIN, RoleE.SUPERADMIN)
   @Post('/')
+  @ApiBearerAuth()
+  @ApiResponse({
+    status: 201,
+    description: 'Schedule Create',
+  })
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
   async create(@Res() res: Response, @Body() payload: CreateScheduleTimeDto) {
     try {
       const data = await this.scheduleTimes.create(payload);
@@ -70,6 +88,12 @@ export class SchedulesTimesController {
 
   @Role(RoleE.ADMIN, RoleE.SUPERADMIN)
   @Patch('/:id')
+  @ApiBearerAuth()
+  @ApiResponse({
+    status: 200,
+    description: 'Schedule time updated',
+  })
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
   async update(
     @Res() res: Response,
     @Param('id') id: string,
@@ -86,6 +110,12 @@ export class SchedulesTimesController {
 
   @Role(RoleE.ADMIN, RoleE.SUPERADMIN)
   @Delete('/:id')
+  @ApiBearerAuth()
+  @ApiResponse({
+    status: 200,
+    description: 'Schedule Time removed',
+  })
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
   async delete(@Res() res: Response, @Param('id') id: string) {
     try {
       const data = await this.scheduleTimes.delete(id);

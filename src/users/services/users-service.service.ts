@@ -95,7 +95,7 @@ export class UsersServiceService {
       })
       .exec();
 
-    return `User with ID: ${id} rigth now is admin`;
+    return `User with ID: ${id} rigth now is${!admin ? ' not' : ''} admin`;
   }
 
   async deleteUser(id: string) {

@@ -9,12 +9,15 @@ import {
   UseGuards,
   Patch,
 } from '@nestjs/common';
+import { ApiTags, ApiResponse, ApiBearerAuth, ApiBody } from '@nestjs/swagger';
+
 import { Response } from 'express';
 
 import { setResponse } from '@core/response/index';
 
 import { CreateAuthDto } from '@root/auth/dtos/auth.dto';
 import { CreateUsers } from '@root/users/dtos/users.dto';
+import { ChangePasswordBody, ChangeEmailBody } from '@core/doc/schema/auth';
 
 import { JwtGuard } from '@core/guards/jwt.guard';
 import { RolesGuard } from '@core/guards/roles.guard';
@@ -28,6 +31,8 @@ import { RoleE } from '@core/enums/role.enum';
 
 import { AuthService } from '@root/auth/services/auth/auth.service';
 
+@ApiTags('Authentication')
+@ApiResponse({ status: 500, description: 'Internal Server Error' })
 @Controller('auth')
 @UseGuards(JwtGuard, RolesGuard)
 export class AuthController {
@@ -35,6 +40,10 @@ export class AuthController {
 
   @Public()
   @Post('/login')
+  @ApiResponse({
+    status: 200,
+    description: '{ token: String , user: CreateUsers }',
+  })
   async login(@Body() body: CreateAuthDto, @Res() res: Response) {
     try {
       const data = await this.authService.login(body.email, body.password);
@@ -48,6 +57,7 @@ export class AuthController {
 
   @Public()
   @Post('/register')
+  @ApiResponse({ status: 201, description: '¡Register Success!' })
   async register(@Body() body: CreateUsers, @Res() res: Response) {
     try {
       const data = await this.authService.register(body);
@@ -60,6 +70,9 @@ export class AuthController {
   }
 
   @Patch('change-password')
+  @ApiBearerAuth()
+  @ApiBody({ type: ChangePasswordBody })
+  @ApiResponse({ status: 200, description: 'Changed Password' })
   async change_pass(@Res() res: Response, @Request() req: any) {
     try {
       const token: RoleI = req.user;
@@ -75,6 +88,9 @@ export class AuthController {
   }
 
   @Patch('change-email')
+  @ApiBearerAuth()
+  @ApiBody({ type: ChangeEmailBody })
+  @ApiResponse({ status: 200, description: 'Email Changed' })
   async change_email(@Res() res: Response, @Request() req: any) {
     try {
       const token: RoleI = req.user;
@@ -88,6 +104,8 @@ export class AuthController {
 
   @Role(RoleE.ADMIN, RoleE.SUPERADMIN)
   @Delete('/:id')
+  @ApiBearerAuth()
+  @ApiResponse({ status: 200, description: 'Account Removed' })
   async deleteUser(@Res() res: Response, @Param('id') id: string) {
     try {
       const data = await this.authService.removeUser(id);

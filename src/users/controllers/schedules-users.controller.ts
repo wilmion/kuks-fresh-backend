@@ -6,6 +6,7 @@ import {
   Response as Res,
   UseGuards,
 } from '@nestjs/common';
+import { ApiTags, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 
 import { Response } from 'express';
 
@@ -23,6 +24,7 @@ import { UpdateSchedulesUsersDto } from '../dtos/schedulesUsers.dto';
 
 import { SchedulesUsersService } from '../services/schedules-users.service';
 
+@ApiTags('Schedules Users')
 @Controller('schedules-users')
 @UseGuards(JwtGuard, RolesGuard)
 export class SchedulesUsersController {
@@ -30,6 +32,12 @@ export class SchedulesUsersController {
 
   @Role(RoleE.ADMIN, RoleE.SUPERADMIN)
   @Patch(':id')
+  @ApiBearerAuth()
+  @ApiResponse({
+    status: 200,
+    description: 'Schedule Updated',
+  })
+  @ApiResponse({ status: 500, description: 'Internal Server Error' })
   async updateScheduleUser(
     @Res() res: Response,
     @Param('id') id: string,
