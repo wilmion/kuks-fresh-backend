@@ -12,6 +12,6 @@ Este backend esta realizado para mi proyecto personal de Kusks Fresh en Angular.
 
 Frontend : [frontend](https://github.com/wilmion/kuks-fresh 'frontend')
 Backend: [deploy](https://kuks-fresh.herokuapp.com/ 'backend')
-Documentation: Proximamente....
+Documentation: [documentation](https://kuks-fresh.herokuapp.com/api/ 'documentation')
 
 > Nunca pares de aprender 💚💚💚
